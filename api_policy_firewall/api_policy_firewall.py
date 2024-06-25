@@ -1,22 +1,30 @@
 import requests
+import json
 
-api_key = 'tr9rjcj4hhjkn5N7yNwszG9ckkzw36'
-username = 'testapiadmin'
+token = 'tr9rjcj4hhjkn5N7yNwszG9ckkzw36'
 
-url = 'https://10.255.5.247:444/logincheck'
+url = 'https://10.255.5.247:444/api/v2/cmdb/firewall/policy'
 
 headers = {
+    'Authorization': f'Bearer {token}',
     'Content-Type': 'application/json', 
 }
 
-payload = {
-    'username': username,
-    'secretkey': api_key 
-}
+r = requests.post(url,headers=headers,  verify=False)
 
-r = requests.post(url,headers=headers, data=payload, verify=False)
+print(r)
 
-print( r.text )
+def elaborate_policy(repsonse_text):
+    response_dict = json.loads(repsonse_text)
+    result_dict = response_dict["results"]
+    for result in result_dict:
+        print("FGT_LABSECURITY")
+        print(result['policyid'])
+        print(result['srcintf'])
+        print(result['dstintf'])
+        print(result['srcaddr'])
+        print(result['dstaddr'])
+        print(result['service'])
 
 
 fake_gesus = """
@@ -4700,3 +4708,5 @@ fake_gesus = """
   "version": "v7.2.8",
   "build": 1639
 }"""
+
+elaborate_policy(fake_gesus)
