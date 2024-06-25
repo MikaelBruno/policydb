@@ -1,7 +1,7 @@
 import requests
 import json
 
-token = 'tr9rjcj4hhjkn5N7yNwszG9ckkzw36'
+"""token = 'tr9rjcj4hhjkn5N7yNwszG9ckkzw36'
 
 url = 'https://10.255.5.247:444/api/v2/cmdb/firewall/policy'
 
@@ -13,6 +13,7 @@ headers = {
 r = requests.post(url,headers=headers,  verify=False)
 
 print(r)
+"""
 
 def elaborate_policy(repsonse_text):
     response_dict = json.loads(repsonse_text)

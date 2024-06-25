@@ -42,18 +42,50 @@ def create_tables(mycursor):
             id INT AUTO_INCREMENT PRIMARY KEY,
             device_id VARCHAR(50),
             in_interface VARCHAR(50),
-            out_interface VARCHAR(50),
-            sources INT,
-            destinations INT,
-            services INT,
-            FOREIGN KEY (sources) REFERENCES HostObj(uid),
-            FOREIGN KEY (destinations) REFERENCES HostObj(uid),
-            FOREIGN KEY (services) REFERENCES ServiceObj(uid)
-        );
-        """)
+            out_interface VARCHAR(50)
+        );""")
         print("Tabella 'Policy' creata con successo.")
     else:
         print("La tabella 'Policy' esiste già.")
+        
+    if 'Policy_Source_HostObj' not in existing_tables:
+        mycursor.execute("""
+        CREATE TABLE Policy_Source_HostObj (
+            policy_id INT,
+            host_id INT,
+            FOREIGN KEY (policy_id) REFERENCES Policy(id),
+            FOREIGN KEY (host_id) REFERENCES HostObj(uid),
+            PRIMARY KEY (policy_id, host_id)
+        );""")
+        print("Tabella 'Policy_Source_HostObj' creata con successo.")
+    else:
+        print("La tabella 'Policy_Source_HostObj' esiste già.")
+        
+    if 'Policy_Destination_HostObj' not in existing_tables:
+        mycursor.execute("""
+        CREATE TABLE Policy_Destination_HostObj (
+            policy_id INT,
+            host_id INT,
+            FOREIGN KEY (policy_id) REFERENCES Policy(id),
+            FOREIGN KEY (host_id) REFERENCES HostObj(uid),
+            PRIMARY KEY (policy_id, host_id)
+        );""")
+        print("Tabella 'Policy_Destination_HostObj' creata con successo.")
+    else:
+        print("La tabella 'Policy_Destination_HostObj' esiste già.")
+        
+    if 'Policy_Service' not in existing_tables:
+        mycursor.execute("""
+        CREATE TABLE Policy_Service (
+            policy_id INT,
+            service_id INT,
+            FOREIGN KEY (policy_id) REFERENCES Policy(id),
+            FOREIGN KEY (service_id) REFERENCES ServiceObj(uid),
+            PRIMARY KEY (policy_id, service_id)
+        );""")
+        print("Tabella 'Policy_Service' creata con successo.")
+    else:
+        print("La tabella 'Policy_Service' esiste già.")
 
 
 mydb = mysql.connector.connect(
